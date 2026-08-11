@@ -1,37 +1,30 @@
-FROM node:20-alpine AS node-builder
+# Use official PHP 8.2 with Apache image
+FROM php:8.2-apache
 
-WORKDIR /app
+# Enable Apache mod_rewrite (required for LavaLust URL routing)
+RUN a2enmod rewrite
 
-COPY package*.json ./
+# Set the Apache document root to LavaLust's 'public' folder
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-RUN npm install --no-audit --no-fund
+# Allow .htaccess files to override settings (needed for LavaLust)
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-COPY . .
+# Copy all your project files into the container
+COPY . /var/www/html
 
-RUN npm run build
-
-FROM php:8.3-fpm-alpine
-
-RUN apk add --no-cache nginx supervisor curl libpng-dev libjpeg-turbo-dev freetype-dev oniguruma-dev libxml2-dev zip unzip git && docker-php-ext-configure gd --with-freetype --with-jpeg && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd opcache && rm -rf /var/cache/apk/*
-
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
+# Set the working directory
 WORKDIR /var/www/html
 
-COPY . .
+# Set proper permissions for LavaLust's runtime and app folders
+RUN chown -R www-data:www-data /var/www/html/runtime /var/www/html/app /var/www/html/public
 
-COPY --from=node-builder /app/public/build ./public/build
+# Expose port 80
+EXPOSE 80
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
-
-RUN chown -R www-data:www-data /var/www/html && chmod -R 775 /var/www/html/storage && chmod -R 775 /var/www/html/bootstrap/cache
-
-RUN rm -f /etc/nginx/http.d/default.conf
-
-COPY docker/nginx.conf /etc/nginx/http.d/default.conf
-
-COPY docker/supervisord.conf /etc/supervisord.conf
-
-EXPOSE 10000
-
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+# Replace default port 80 with Render's dynamic PORT variable and start Apache
+CMD sed -i "s/80/${PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-enabled/000-default.conf && apache2-foreground
+Compose
+Write to Allen Atienza
