@@ -1,18 +1,53 @@
-# --- Stage 1: Build Dependencies ---
+```dockerfile
+# ==============================
+# Stage 1: Build frontend assets
+# ==============================
 FROM node:20-alpine AS node-builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --no-audit && npm run build
 
-# --- Stage 2: Production Image ---
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies even when package-lock.json is absent
+RUN npm install --no-audit --no-fund
+
+# Copy frontend source files
+COPY . .
+
+# Build Vite/Laravel frontend assets
+RUN npm run build
+
+
+# ==============================
+# Stage 2: Production PHP image
+# ==============================
 FROM php:8.3-fpm-alpine
 
-# Install system dependencies & PHP extensions
+# Install system dependencies
 RUN apk add --no-cache \
-    nginx supervisor curl libpng-dev libjpeg-turbo-dev freetype-dev \
-    oniguruma-dev libxml2-dev zip unzip git \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd opcache \
+    nginx \
+    supervisor \
+    curl \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    git \
+    && docker-php-ext-configure gd \
+        --with-freetype \
+        --with-jpeg \
+    && docker-php-ext-install \
+        pdo_mysql \
+        mbstring \
+        exif \
+        pcntl \
+        bcmath \
+        gd \
+        opcache \
     && rm -rf /var/cache/apk/*
 
 # Install Composer
@@ -20,62 +55,35 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy application code
+# Copy Laravel application
 COPY . .
+
+# Copy compiled frontend assets
 COPY --from=node-builder /app/public/build ./public/build
 
-# Install PHP production dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction \
-    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Install PHP dependencies
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction \
+    --prefer-dist
 
-# Configure Nginx
-COPY <<'EOF' /etc/nginx/http.d/default.conf
-server {
-    listen ${PORT};
-    root /var/www/html/public;
-    index index.php;
+# Laravel permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
 
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+# Nginx configuration
+RUN rm -f /etc/nginx/http.d/default.conf
 
-    location ~ \.php$ {
-        fastcgi_pass 127.0.0.1:9000;
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        include fastcgi_params;
-    }
+COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 
-    location ~ /\.ht { deny all; }
-}
-EOF
+# Supervisor configuration
+COPY docker/supervisord.conf /etc/supervisord.conf
 
-# Configure Supervisor to run both Nginx and PHP-FPM
-COPY <<'EOF' /etc/supervisor/conf.d/app.conf
-[supervisord]
-nodaemon=true
-logfile=/dev/null
-pidfile=/tmp/supervisord.pid
+# Render uses the PORT environment variable.
+# Supervisor starts nginx and PHP-FPM.
+EXPOSE 10000
 
-[program:nginx]
-command=nginx -g "daemon off;"
-autostart=true
-autorestart=true
-stdout_logfile=/dev/stdout
-stderr_logfile=/dev/stderr
-
-[program:php-fpm]
-command=php-fpm -F
-autostart=true
-autorestart=true
-stdout_logfile=/dev/stdout
-stderr_logfile=/dev/stderr
-EOF
-
-# OPcache settings for production
-RUN echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini \
-    && echo "opcache.memory_consumption=256" >> /usr/local/etc/php/conf.d/opcache.ini \
-    && echo "opcache.max_accelerated_files=20000" >> /usr/local/etc/php/conf.d/opcache.ini
-
-EXPOSE ${PORT}
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/app.conf"]
+CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+```
