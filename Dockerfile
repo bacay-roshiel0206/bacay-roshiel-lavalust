@@ -1,5 +1,3 @@
-# Stage 1: Build frontend assets
-
 FROM node:20-alpine AS node-builder
 
 WORKDIR /app
@@ -12,34 +10,9 @@ COPY . .
 
 RUN npm run build
 
-# Stage 2: Production PHP image
-
 FROM php:8.3-fpm-alpine
 
-RUN apk add --no-cache 
-nginx 
-supervisor 
-curl 
-libpng-dev 
-libjpeg-turbo-dev 
-freetype-dev 
-oniguruma-dev 
-libxml2-dev 
-zip 
-unzip 
-git 
-&& docker-php-ext-configure gd 
---with-freetype 
---with-jpeg 
-&& docker-php-ext-install 
-pdo_mysql 
-mbstring 
-exif 
-pcntl 
-bcmath 
-gd 
-opcache 
-&& rm -rf /var/cache/apk/*
+RUN apk add --no-cache nginx supervisor curl libpng-dev libjpeg-turbo-dev freetype-dev oniguruma-dev libxml2-dev zip unzip git && docker-php-ext-configure gd --with-freetype --with-jpeg && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd opcache && rm -rf /var/cache/apk/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -49,15 +22,9 @@ COPY . .
 
 COPY --from=node-builder /app/public/build ./public/build
 
-RUN composer install 
---no-dev 
---optimize-autoloader 
---no-interaction 
---prefer-dist
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
-RUN chown -R www-data:www-data /var/www/html 
-&& chmod -R 775 /var/www/html/storage 
-&& chmod -R 775 /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html && chmod -R 775 /var/www/html/storage && chmod -R 775 /var/www/html/bootstrap/cache
 
 RUN rm -f /etc/nginx/http.d/default.conf
 
