@@ -1,8 +1,4 @@
-# ==============================
-
 # Stage 1: Build frontend assets
-
-# ==============================
 
 FROM node:20-alpine AS node-builder
 
@@ -16,11 +12,7 @@ COPY . .
 
 RUN npm run build
 
-# ==============================
-
 # Stage 2: Production PHP image
-
-# ==============================
 
 FROM php:8.3-fpm-alpine
 
