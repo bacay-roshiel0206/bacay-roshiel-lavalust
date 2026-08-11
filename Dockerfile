@@ -1,4 +1,3 @@
-```dockerfile
 # Use official PHP 8.2 with Apache
 FROM php:8.2-apache
 
@@ -8,10 +7,11 @@ RUN a2enmod rewrite
 # Set Apache document root to LavaLust's public folder
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-# Update Apache configuration to use the public directory
+# Update Apache virtual host configuration
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/sites-available/*.conf
 
+# Update Apache main configuration
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/apache2.conf \
     /etc/apache2/conf-available/*.conf
@@ -20,24 +20,23 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
 RUN sed -i 's/AllowOverride None/AllowOverride All/g' \
     /etc/apache2/apache2.conf
 
-# Copy the LavaLust project into the container
+# Copy LavaLust project into the container
 COPY . /var/www/html
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Set permissions for LavaLust runtime/app/public directories
+# Set permissions for LavaLust directories
 RUN chown -R www-data:www-data \
     /var/www/html/runtime \
     /var/www/html/app \
     /var/www/html/public
 
-# Expose Apache port
+# Expose HTTP port
 EXPOSE 80
 
-# Use Render's PORT environment variable
+# Start Apache using Render's PORT environment variable
 CMD sed -i "s/80/${PORT}/g" \
     /etc/apache2/ports.conf \
     /etc/apache2/sites-enabled/000-default.conf \
     && apache2-foreground
-```
