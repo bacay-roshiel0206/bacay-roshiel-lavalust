@@ -78,7 +78,6 @@ EXPOSE 10000
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]
 
 # Ignore database configuration
-app/config/database.php
 
 # Ignore Navicat / SQL exports
 *.sql
