@@ -1,0 +1,5 @@
+admin@fic.test
+ops@fic.test
+staff@fic.test
+finance@fic.test
+client@fic.test
