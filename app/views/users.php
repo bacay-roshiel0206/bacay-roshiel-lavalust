@@ -12,7 +12,6 @@
 
     <style>
         :root {
-            /* ── NEW CUSTOM DARK COLOR PALETTE ── */
             --bg-main: #060A12;
             --bg-card: rgba(13, 20, 33, 0.85);
             --border-color: rgba(16, 185, 129, 0.25);
@@ -24,7 +23,6 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Custom Background directly in CSS */
         body { 
             background: radial-gradient(circle at 50% -20%, #111C2E 0%, #060A12 70%, #030509 100%);
             background-attachment: fixed;
@@ -34,7 +32,6 @@
             overflow-x: hidden;
         }
 
-        /* ── Preloader ── */
         .preloader {
             position: fixed; inset: 0; z-index: 9999;
             background: #060A12;
@@ -58,7 +55,6 @@
             letter-spacing: 0.25em; text-transform: uppercase;
         }
 
-        /* ── Grid Pattern Background ── */
         .bg-grid-pattern {
             position: absolute; inset: 0;
             background-image: 
@@ -70,14 +66,12 @@
             pointer-events: none;
         }
 
-        /* ── Header Area ── */
         .header-section {
             position: relative;
             padding: 70px 24px 40px;
             text-align: center;
         }
 
-        /* ── Glassmorphism Card ── */
         .glass-card {
             background: var(--bg-card);
             backdrop-filter: blur(20px);
@@ -91,7 +85,6 @@
             border-color: rgba(16, 185, 129, 0.4);
         }
 
-        /* ── Glass Table ── */
         .glass-table {
             width: 100%;
             border-collapse: separate;
@@ -122,7 +115,6 @@
             color: var(--text-body);
         }
 
-        /* ── Table Columns Styling ── */
         .cell-id {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
@@ -133,11 +125,10 @@
             color: #F8FAFC;
         }
         
-        /* HIGHLIGHTED EMAIL STYLING */
         .cell-email {
             font-family: 'Inter', sans-serif;
             font-weight: 500;
-            color: #22D3EE !important; /* Bright Cyan Highlight */
+            color: #22D3EE !important;
             background: rgba(6, 182, 212, 0.1);
             border: 1px solid rgba(6, 182, 212, 0.25);
             padding: 6px 14px;
@@ -148,11 +139,10 @@
             box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
         }
 
-        /* HIGHLIGHTED USERNAME STYLING */
         .cell-username {
             font-family: 'Fira Code', monospace;
             font-weight: 600;
-            color: #A7F3D0 !important; /* Soft Emerald Highlight */
+            color: #A7F3D0 !important;
             background: rgba(16, 185, 129, 0.12);
             padding: 6px 12px;
             border-radius: 6px;
@@ -161,7 +151,6 @@
             font-size: 13px;
         }
 
-        /* Status Tag Header */
         .status-tag {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 6px 16px;
@@ -181,7 +170,6 @@
             box-shadow: 0 0 8px #10B981;
         }
 
-        /* Responsive Mobile Layout */
         @media (max-width: 768px) {
             .glass-table, .glass-table thead, .glass-table tbody, .glass-table th, .glass-table td, .glass-table tr {
                 display: block;
@@ -216,7 +204,6 @@
 </head>
 <body>
 
-    <!-- Preloader Animation -->
     <div class="preloader" id="preloader">
         <div class="loader-text">Loading Directory</div>
         <div class="loader-bar-track">
@@ -224,10 +211,8 @@
         </div>
     </div>
 
-    <!-- Background Pattern -->
     <div class="bg-grid-pattern"></div>
 
-    <!-- HEADER SECTION -->
     <section class="header-section">
         <div class="status-tag">
             <span class="status-dot"></span>
@@ -244,7 +229,6 @@
         <p style="color: #64748B; font-size: 14px;">Complete list of platform registered accounts</p>
     </section>
 
-    <!-- TABLE SECTION -->
     <section style="padding: 0 20px 60px; position: relative; z-index: 10;">
         <div style="max-width: 950px; margin: 0 auto;">
 
@@ -283,21 +267,19 @@
                         <?php if(!empty($users)): ?>
                             <?php foreach ($users as $user): ?>
                                 <tr>
-                                    <td data-label="ID" class="cell-id">#<?= htmlspecialchars($user['id']) ?></td>
-                                    <td data-label="First Name" class="cell-name"><?= htmlspecialchars($user['firstname']) ?></td>
-                                    <td data-label="Last Name" class="cell-name"><?= htmlspecialchars($user['lastname']) ?></td>
+                                    <td data-label="ID" class="cell-id">#<?php echo htmlspecialchars($user['id']); ?></td>
+                                    <td data-label="First Name" class="cell-name"><?php echo htmlspecialchars($user['firstname']); ?></td>
+                                    <td data-label="Last Name" class="cell-name"><?php echo htmlspecialchars($user['lastname']); ?></td>
                                     
-                                    <!-- Highlighted Email -->
                                     <td data-label="Email">
                                         <span class="cell-email">
                                             <i data-lucide="mail" style="width:12px; height:12px;"></i>
-                                            <?= htmlspecialchars($user['email']) ?>
+                                            <?php echo htmlspecialchars($user['email']); ?>
                                         </span>
                                     </td>
                                     
-                                    <!-- Highlighted Username -->
                                     <td data-label="Username">
-                                        <span class="cell-username">@<?= htmlspecialchars($user['username']) ?></span>
+                                        <span class="cell-username">@<?php echo htmlspecialchars($user['username']); ?></span>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -313,17 +295,13 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer style="padding: 24px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
-        <p style="font-size: 12px; color: #475569;">&copy; <?= date('Y') ?> Users Directory. All rights reserved.</p>
+        <p style="font-size: 12px; color: #475569;">&copy; <?php echo date('Y'); ?> Users Directory. All rights reserved.</p>
     </footer>
 
-    <!-- JS SCRIPTS -->
     <script>
-        // Initialize Icons
         lucide.createIcons();
 
-        // Smooth Page Loader Animation using GSAP
         const tl = gsap.timeline();
         tl.to('#loaderBar', {
             width: '100%',
