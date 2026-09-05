@@ -48,5 +48,7 @@ $router->get('/', 'Welcome::index');
 
 $router->get('/student', 'UsersController::index');
 
+$route['default_controller'] = 'UsersController';
+
 $router->get('/student/profile', 'StudentController::profile')
        ->middleware('student');
