@@ -40,3 +40,17 @@ CMD sed -i "s/80/${PORT}/g" \
     /etc/apache2/ports.conf \
     /etc/apache2/sites-enabled/000-default.conf \
     && apache2-foreground
+
+    FROM php:8.2-apache
+
+# Install PHP database extensions
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+
+# Enable Apache mod_rewrite for LavaLust routing
+RUN a2enmod rewrite
+
+# Copy project files
+COPY . /var/www/html/
+
+# Set correct permissions
+RUN chown -R www-data:www-data /var/www/html
