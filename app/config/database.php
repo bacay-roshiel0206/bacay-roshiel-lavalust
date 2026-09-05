@@ -2,7 +2,7 @@
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 $database['main'] = array(
-    'driver'   => 'mysqli', // o 'pdo' depende sa ginagamit mo
+    'driver'   => 'mysql',
     'hostname' => getenv('DB_HOST') ?: '',
     'port'     => getenv('DB_PORT') ?: '',
     'username' => getenv('DB_USER') ?: '',
