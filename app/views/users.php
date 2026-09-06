@@ -12,45 +12,52 @@
 
     <style>
         :root {
-            --bg-main: #060A12;
-            --bg-card: rgba(13, 20, 33, 0.85);
-            --border-color: rgba(16, 185, 129, 0.25);
-            --text-heading: #FFFFFF;
-            --text-body: #94A3B8;
-            --accent-green: #10B981;
-            --accent-cyan: #06B6D4;
+            /* ── POLAR NIGHT, ARCTIC SUNRISE & ICE MIST PALETTE ── */
+            --polar-night-darkest: #2E3440;
+            --polar-night-dark: #3B4252;
+            --polar-night-card: rgba(43, 48, 59, 0.85);
+            
+            --ice-mist-light: #E5E9F0;
+            --ice-mist-bright: #ECEFF4;
+            --ice-mist-muted: #88C0D0;
+            
+            --arctic-sunrise-gold: #EBCB8B;
+            --arctic-sunrise-orange: #D08770;
+            --arctic-sunrise-pink: #B48EAD;
+            
+            --border-color: rgba(136, 192, 208, 0.25);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            background: radial-gradient(circle at 50% -20%, #111C2E 0%, #060A12 70%, #030509 100%);
+            background: radial-gradient(circle at 50% -20%, #3B4252 0%, #2E3440 70%, #242933 100%);
             background-attachment: fixed;
             min-height: 100vh;
-            color: #E2E8F0;
+            color: var(--ice-mist-light);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
 
         .preloader {
             position: fixed; inset: 0; z-index: 9999;
-            background: #060A12;
+            background: #2E3440;
             display: flex; align-items: center; justify-content: center;
             flex-direction: column; gap: 20px;
         }
         .loader-bar-track {
             width: 200px; height: 3px;
-            background: rgba(16, 185, 129, 0.15);
+            background: rgba(136, 192, 208, 0.15);
             border-radius: 4px; overflow: hidden;
         }
         .loader-bar {
             width: 0%; height: 100%;
-            background: linear-gradient(90deg, #10B981, #06B6D4);
+            background: linear-gradient(90deg, #88C0D0, #EBCB8B);
             border-radius: 4px;
         }
         .loader-text {
             font-family: 'Space Grotesk', sans-serif;
-            color: #10B981;
+            color: #88C0D0;
             font-size: 11px; font-weight: 600;
             letter-spacing: 0.25em; text-transform: uppercase;
         }
@@ -58,8 +65,8 @@
         .bg-grid-pattern {
             position: absolute; inset: 0;
             background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(to right, rgba(229, 233, 240, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(229, 233, 240, 0.03) 1px, transparent 1px);
             background-size: 40px 40px;
             mask-image: radial-gradient(ellipse at top, black 40%, transparent 80%);
             -webkit-mask-image: radial-gradient(ellipse at top, black 40%, transparent 80%);
@@ -73,16 +80,16 @@
         }
 
         .glass-card {
-            background: var(--bg-card);
+            background: var(--polar-night-card);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
             border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
             transition: transform 0.3s ease, border-color 0.3s ease;
         }
         .glass-card:hover {
-            border-color: rgba(16, 185, 129, 0.4);
+            border-color: rgba(136, 192, 208, 0.45);
         }
 
         .glass-table {
@@ -98,76 +105,59 @@
             font-weight: 700;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: #34D399;
-            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
-            background: rgba(16, 185, 129, 0.04);
+            color: #88C0D0;
+            border-bottom: 1px solid rgba(136, 192, 208, 0.2);
+            background: rgba(136, 192, 208, 0.05);
         }
         .glass-table tbody tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(229, 233, 240, 0.05);
             transition: background 0.25s ease, transform 0.25s ease;
         }
         .glass-table tbody tr:hover {
-            background: rgba(16, 185, 129, 0.06);
+            background: rgba(136, 192, 208, 0.08);
         }
         .glass-table td {
             padding: 18px 24px;
             font-size: 14px;
-            color: var(--text-body);
+            color: #D8DEE9;
         }
 
         .cell-id {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            color: #64748B;
+            color: #4C566A;
         }
         .cell-name {
             font-weight: 600;
-            color: #F8FAFC;
+            color: #ECEFF4;
         }
         
+        /* HIGHLIGHTED EMAIL STYLING (Arctic Sunrise Gold Accent) */
         .cell-email {
             font-family: 'Inter', sans-serif;
             font-weight: 500;
-            color: #22D3EE !important;
-            background: rgba(6, 182, 212, 0.1);
-            border: 1px solid rgba(6, 182, 212, 0.25);
+            color: #EBCB8B !important;
+            background: rgba(235, 203, 139, 0.1);
+            border: 1px solid rgba(235, 203, 139, 0.25);
             padding: 6px 14px;
             border-radius: 8px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
+            box-shadow: 0 0 10px rgba(235, 203, 139, 0.12);
         }
 
+        /* HIGHLIGHTED USERNAME STYLING (Ice Mist Cyan Accent) */
         .cell-username {
             font-family: 'Fira Code', monospace;
             font-weight: 600;
-            color: #A7F3D0 !important;
-            background: rgba(16, 185, 129, 0.12);
+            color: #88C0D0 !important;
+            background: rgba(136, 192, 208, 0.12);
             padding: 6px 12px;
             border-radius: 6px;
-            border: 1px dashed rgba(16, 185, 129, 0.3);
+            border: 1px dashed rgba(136, 192, 208, 0.3);
             display: inline-block;
             font-size: 13px;
-        }
-
-        .status-tag {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 6px 16px;
-            background: rgba(16, 185, 129, 0.12);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 100px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 10px; font-weight: 700;
-            letter-spacing: 0.15em; text-transform: uppercase;
-            color: #34D399;
-            margin-bottom: 16px;
-        }
-        .status-dot {
-            width: 6px; height: 6px;
-            background: #10B981;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #10B981;
         }
 
         @media (max-width: 768px) {
@@ -178,11 +168,11 @@
                 position: absolute; top: -9999px; left: -9999px;
             }
             .glass-table tbody tr {
-                border: 1px solid rgba(16, 185, 129, 0.2);
+                border: 1px solid rgba(136, 192, 208, 0.2);
                 border-radius: 16px;
                 margin-bottom: 16px;
                 padding: 12px;
-                background: rgba(13, 20, 33, 0.6);
+                background: rgba(43, 48, 59, 0.6);
             }
             .glass-table td {
                 border: none;
@@ -196,7 +186,7 @@
                 font-family: 'Space Grotesk', sans-serif;
                 font-size: 10px; font-weight: 700;
                 letter-spacing: 0.1em; text-transform: uppercase;
-                color: #10B981;
+                color: #88C0D0;
                 text-align: left;
             }
         }
@@ -214,19 +204,15 @@
     <div class="bg-grid-pattern"></div>
 
     <section class="header-section">
-        <div class="status-tag">
-            <span class="status-dot"></span>
-            System Active
-        </div>
         <h1 style="
             font-family: 'Syne', sans-serif;
             font-size: clamp(32px, 5vw, 48px);
             font-weight: 800;
-            color: #FFFFFF;
+            color: #ECEFF4;
             letter-spacing: -0.02em;
             margin-bottom: 8px;
         ">Users Directory</h1>
-        <p style="color: #64748B; font-size: 14px;">Complete list of platform registered accounts</p>
+        <p style="color: #D8DEE9; font-size: 14px;">List of registered accounts</p>
     </section>
 
     <section style="padding: 0 20px 60px; position: relative; z-index: 10;">
@@ -253,12 +239,12 @@
                             </th>
                             <th>
                                 <div style="display:flex; align-items:center; gap:6px;">
-                                    <i data-lucide="mail" style="width:14px; height:14px; color:#22D3EE;"></i> Email
+                                    <i data-lucide="mail" style="width:14px; height:14px; color:#EBCB8B;"></i> Email
                                 </div>
                             </th>
                             <th>
                                 <div style="display:flex; align-items:center; gap:6px;">
-                                    <i data-lucide="at-sign" style="width:14px; height:14px; color:#34D399;"></i> Username
+                                    <i data-lucide="at-sign" style="width:14px; height:14px; color:#88C0D0;"></i> Username
                                 </div>
                             </th>
                         </tr>
@@ -285,7 +271,7 @@
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="5" style="text-align:center; padding: 40px; color: #64748B;">No users found in database.</td>
+                                <td colspan="5" style="text-align:center; padding: 40px; color: #4C566A;">No users found in database.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -295,8 +281,8 @@
         </div>
     </section>
 
-    <footer style="padding: 24px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
-        <p style="font-size: 12px; color: #475569;">&copy; <?php echo date('Y'); ?> Users Directory. All rights reserved.</p>
+    <footer style="padding: 24px; text-align: center; border-top: 1px solid rgba(229, 233, 240, 0.05);">
+        <p style="font-size: 12px; color: #4C566A;">&copy; <?php echo date('Y'); ?> Users Directory. All rights reserved.</p>
     </footer>
 
     <script>
