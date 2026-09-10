@@ -13,13 +13,23 @@ class Auth extends Controller {
             $username = $this->io->post('username') ?? '';
             $password = $this->io->post('password') ?? '';
 
-            // Nagbabalik ng array ng records ang get()
-            $users = $this->db->table('auth')->where('username', $username)->get();
+            $query_result = $this->db->table('auth')->where('username', $username)->get();
 
-            // Kunin ang unang record/row kung may nahanap na user
-            $user = !empty($users) ? $users[0] : null;
+            // Ligtas na pagkuha ng user row:
+            // Kung multi-dimensional array (list ng rows), kunin ang unang element gamit ang reset()
+            // Kung null o empty, gagawing null
+            $user = null;
+            if (is_array($query_result) && !empty($query_result)) {
+                // Kung associative array na mismo ang ibinalik (iisang row):
+                if (isset($query_result['username'])) {
+                    $user = $query_result;
+                } else {
+                    // Kung indexed array ng rows:
+                    $user = reset($query_result);
+                }
+            }
 
-            if($user && password_verify($password, $user['password'])) {
+            if($user && isset($user['password']) && password_verify($password, $user['password'])) {
                 $this->session->set_userdata(array(
                     'logged_in' => TRUE,
                     'username'  => $user['username']
