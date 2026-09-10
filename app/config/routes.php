@@ -51,7 +51,14 @@ $router->get('/users', 'UsersController::index');
 $router->get('/student/profile', 'StudentController::profile')
        ->middleware('student');
 
-       $router->get('crud', 'crud/index');
-$router->get('crud/create', 'crud/crete');
-$router->get('crud/edit/(:num)', 'crud/edit/$1');
-$router->get('crud/delete/(:num)', 'crud/delete/$1');
+$router->get('product', 'product/index');
+$router->get('product/create', 'product/create');
+$router->post('product/create', 'product/create');
+$router->get('product/view/(:num)', 'product/view/$1');
+$router->get('product/edit/(:num)', 'product/edit/$1');
+$router->post('product/edit/(:num)', 'product/edit/$1');
+$router->get('product/delete/(:num)', 'product/delete/$1');
+
+$router->get('auth/login', 'auth/login');
+$router->post('auth/login', 'auth/login');
+$router->get('auth/logout', 'auth/logout');
