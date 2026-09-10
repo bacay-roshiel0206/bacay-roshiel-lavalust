@@ -9,7 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: #f8fafc; color: #0f172a; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        body { 
+            background: linear-gradient(135deg, #cbd5e1 0%, #e2e8f0 50%, #93c5fd 100%); 
+            color: #0f172a; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
         .login-card { width: 100%; max-width: 400px; background: #ffffff; padding: 36px 32px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border: 1px solid #e2e8f0; }
         .login-header { margin-bottom: 28px; text-align: center; }
         .login-header h2 { color: #0f172a; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }

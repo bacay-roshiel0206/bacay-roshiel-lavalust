@@ -11,7 +11,13 @@
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: #f8fafc; color: #0f172a; padding: 40px 20px; line-height: 1.5; }
+        body { 
+                background: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 50%, #dbeafe 100%); 
+                min-height: 100vh;
+                color: #0f172a; 
+                padding: 40px 20px; 
+                line-height: 1.5; 
+            }
         .container { max-width: 1100px; margin: 0 auto; background: #ffffff; padding: 32px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border: 1px solid #e2e8f0; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
         .header h2 { color: #0f172a; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
