@@ -24,7 +24,7 @@ class Product extends Controller {
     }
 
     public function create() {
-        if($this->io->post()) {
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = array(
                 'product_name' => $this->io->post('product_name') ?? '',
                 'description'  => $this->io->post('description') ?? '',
@@ -42,7 +42,7 @@ class Product extends Controller {
     public function edit($id) {
         $data['product'] = $this->Product_model->find($id);
 
-        if($this->io->post()) {
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $update_data = array(
                 'product_name' => $this->io->post('product_name') ?? '',
                 'description'  => $this->io->post('description') ?? '',
