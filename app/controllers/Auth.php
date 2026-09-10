@@ -13,7 +13,8 @@ class Auth extends Controller {
             $username = $this->io->post('username') ?? '';
             $password = $this->io->post('password') ?? '';
 
-            $user = $this->db->table('auth')->where('username', $username)->get()->row();
+            // Ginamit ang get_one() sa halip na get()->row()
+            $user = $this->db->table('auth')->where('username', $username)->get_one();
 
             if($user && password_verify($password, $user['password'])) {
                 $this->session->set_userdata(array(
