@@ -39,7 +39,7 @@ class Product extends Controller {
         $this->call->view('product_form', $data);
     }
 
-    public function edit($id) {
+   public function edit($id) {
         $data['product'] = $this->Product_model->find($id);
 
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -50,6 +50,8 @@ class Product extends Controller {
                 'quantity'     => $this->io->post('quantity') ?? 0
             );
             $this->Product_model->update($id, $update_data);
+            
+            // Diretso muna sa Read-Only / View Details Page pagkatapos mag-update
             redirect('product/view/' . $id);
         }
 
