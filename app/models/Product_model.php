@@ -1,11 +1,29 @@
 <?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
-class Product_model extends ORM {
-    public $table = 'products';
+class Product_model extends Model {
 
-    public function __construct() {
-        parent::__construct();
+    public function all() {
+        return $this->db->table('products')->get();
+    }
+
+    public function find($id) {
+        $result = $this->db->table('products')->where('id', $id)->get();
+        if (is_array($result) && !empty($result)) {
+            return isset($result['id']) ? $result : reset($result);
+        }
+        return null;
+    }
+
+    public function insert($data) {
+        return $this->db->table('products')->insert($data);
+    }
+
+    public function update($id, $data) {
+        return $this->db->table('products')->where('id', $id)->update($data);
+    }
+
+    public function delete($id) {
+        return $this->db->table('products')->where('id', $id)->delete();
     }
 }
-?>
