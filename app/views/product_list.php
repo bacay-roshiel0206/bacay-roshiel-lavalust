@@ -57,19 +57,33 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if(!empty($products) && is_array($products)): ?>
-                    <?php foreach($products as $product): ?>
-                        <?php if(is_array($product)): ?>
+                <?php 
+                // Tiyaking laging multi-dimensional array ang $list para sa foreach loop
+                $list = [];
+                if (!empty($products)) {
+                    if (isset($products['id'])) {
+                        // Kapag iisang row lang ang ibinalik
+                        $list = [$products];
+                    } else {
+                        // Kapag maramihang rows (list of products)
+                        $list = $products;
+                    }
+                }
+                ?>
+
+                <?php if(!empty($list)): ?>
+                    <?php foreach($list as $product): ?>
+                        <?php if(is_array($product) && isset($product['id'])): ?>
                         <tr>
-                            <td><strong>#<?php echo $product['id'] ?? ''; ?></strong></td>
+                            <td><strong>#<?php echo $product['id']; ?></strong></td>
                             <td><?php echo htmlspecialchars($product['product_name'] ?? ''); ?></td>
                             <td><?php echo htmlspecialchars($product['description'] ?? '-'); ?></td>
                             <td><span class="badge badge-price">₱<?php echo number_format($product['price'] ?? 0, 2); ?></span></td>
                             <td><span class="badge badge-qty"><?php echo $product['quantity'] ?? 0; ?> pcs</span></td>
                             <td>
                                 <div class="actions">
-                                    <a href="<?php echo site_url('product/edit/' . ($product['id'] ?? '')); ?>" class="btn btn-edit btn-sm">Edit</a>
-                                    <a href="<?php echo site_url('product/delete/' . ($product['id'] ?? '')); ?>" class="btn btn-delete btn-sm" onclick="return confirm('Sigurado ka bang gusto mong burahin ang produktong ito?');">Delete</a>
+                                    <a href="<?php echo site_url('product/edit/' . $product['id']); ?>" class="btn btn-edit btn-sm">Edit</a>
+                                    <a href="<?php echo site_url('product/delete/' . $product['id']); ?>" class="btn btn-delete btn-sm" onclick="return confirm('Sigurado ka bang gusto mong burahin ang produktong ito?');">Delete</a>
                                 </div>
                             </td>
                         </tr>
