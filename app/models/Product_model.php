@@ -4,7 +4,19 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 class Product_model extends Model {
 
     public function all() {
-        return $this->db->table('products')->get();
+        $result = $this->db->table('products')->get();
+        
+        if (empty($result)) {
+            return [];
+        }
+
+        // Kung single row array ang ibinalik (may 'id' key na agad sa top-level array),
+        // i-wrap ito sa loob ng panibagong array para maging list of rows [[...]]
+        if (isset($result['id'])) {
+            return [$result];
+        }
+
+        return $result;
     }
 
     public function find($id) {
