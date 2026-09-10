@@ -4,33 +4,23 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 class Product_model extends Model {
 
     public function all() {
-        $result = $this->db->table('products')->get();
-
-        if (empty($result)) {
-            return [];
+        // Direktang kinukuha ang lahat ng rows mula sa products table
+        $query = $this->db->raw("SELECT * FROM products ORDER BY id DESC");
+        
+        if (is_object($query)) {
+            return $query->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        // Kung numerical index 0 ang unang susi (halimbawa $result[0]), ibig sabihin listahan na ito ng multiple records
-        if (isset($result[0]) && is_array($result[0])) {
-            return $result;
-        }
-
-        // Kung associative array lang ang pinalabas (iisang record), i-wrap ito sa listahan
-        return [$result];
+        return is_array($query) ? $query : [];
     }
 
     public function find($id) {
-        $result = $this->db->table('products')->where('id', $id)->get();
-        if (empty($result)) {
-            return null;
+        $query = $this->db->raw("SELECT * FROM products WHERE id = ?", array($id));
+        if (is_object($query)) {
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result : null;
         }
-
-        // Kung nasa loob ng indexed array [[...]], kunin ang unang item
-        if (isset($result[0]) && is_array($result[0])) {
-            return $result[0];
-        }
-
-        return $result;
+        return null;
     }
 
     public function insert($data) {
