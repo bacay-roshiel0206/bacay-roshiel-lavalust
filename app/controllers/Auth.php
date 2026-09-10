@@ -13,8 +13,11 @@ class Auth extends Controller {
             $username = $this->io->post('username') ?? '';
             $password = $this->io->post('password') ?? '';
 
-            // Ginamit ang get_one() sa halip na get()->row()
-            $user = $this->db->table('auth')->where('username', $username)->get_one();
+            // Nagbabalik ng array ng records ang get()
+            $users = $this->db->table('auth')->where('username', $username)->get();
+
+            // Kunin ang unang record/row kung may nahanap na user
+            $user = !empty($users) ? $users[0] : null;
 
             if($user && password_verify($password, $user['password'])) {
                 $this->session->set_userdata(array(
