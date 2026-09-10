@@ -1,4 +1,6 @@
 <?php
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
 class Product extends Controller {
     public function __construct() {
         parent::__construct();
@@ -24,10 +26,10 @@ class Product extends Controller {
     public function create() {
         if($this->io->post()) {
             $data = array(
-                'product_name' => $this->io->post('product_name'),
-                'description' => $this->io->post('description'),
-                'price' => $this->io->post('price'),
-                'quantity' => $this->io->post('quantity')
+                'product_name' => $this->io->post('product_name') ?? '',
+                'description'  => $this->io->post('description') ?? '',
+                'price'        => $this->io->post('price') ?? 0,
+                'quantity'     => $this->io->post('quantity') ?? 0
             );
             $this->Product_model->insert($data);
             redirect('product');
@@ -42,10 +44,10 @@ class Product extends Controller {
 
         if($this->io->post()) {
             $update_data = array(
-                'product_name' => $this->io->post('product_name'),
-                'description' => $this->io->post('description'),
-                'price' => $this->io->post('price'),
-                'quantity' => $this->io->post('quantity')
+                'product_name' => $this->io->post('product_name') ?? '',
+                'description'  => $this->io->post('description') ?? '',
+                'price'        => $this->io->post('price') ?? 0,
+                'quantity'     => $this->io->post('quantity') ?? 0
             );
             $this->Product_model->update($id, $update_data);
             redirect('product/view/' . $id);
