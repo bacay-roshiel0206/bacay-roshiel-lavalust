@@ -50,3 +50,8 @@ $router->get('/users', 'UsersController::index');
 
 $router->get('/student/profile', 'StudentController::profile')
        ->middleware('student');
+
+$router['crud']='crud/index';   
+$router['crud/create']='crud/crete';  
+$router['crud/edit(:num)']='crud/edit/$1';  
+$router['crud/delete(:num)']='crud/delete/$1';      
