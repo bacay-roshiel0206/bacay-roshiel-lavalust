@@ -1,6 +1,9 @@
 # Use official PHP 8.2 with Apache
 FROM php:8.2-apache
 
+# Install PHP extensions required by LavaLust and MySQL
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+
 # Enable Apache mod_rewrite for LavaLust URL routing
 RUN a2enmod rewrite
 
@@ -20,37 +23,23 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
 RUN sed -i 's/AllowOverride None/AllowOverride All/g' \
     /etc/apache2/apache2.conf
 
-# Copy LavaLust project into the container
+# Copy LavaLust project
 COPY . /var/www/html
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Set permissions for LavaLust directories
+# Set permissions
 RUN chown -R www-data:www-data \
     /var/www/html/runtime \
     /var/www/html/app \
     /var/www/html/public
 
-# Expose HTTP port
+# Render provides the PORT environment variable
 EXPOSE 80
 
-# Start Apache using Render's PORT environment variable
+# Start Apache on Render's assigned port
 CMD sed -i "s/80/${PORT}/g" \
     /etc/apache2/ports.conf \
     /etc/apache2/sites-enabled/000-default.conf \
     && apache2-foreground
-
-    FROM php:8.2-apache
-
-# Install PHP database extensions
-RUN docker-php-ext-install pdo pdo_mysql mysqli
-
-# Enable Apache mod_rewrite for LavaLust routing
-RUN a2enmod rewrite
-
-# Copy project files
-COPY . /var/www/html/
-
-# Set correct permissions
-RUN chown -R www-data:www-data /var/www/html
