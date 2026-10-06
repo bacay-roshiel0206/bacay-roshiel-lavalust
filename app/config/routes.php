@@ -91,7 +91,7 @@ $router->options(
     'api/auth/login',
     function () {
 
-        header('Access-Control-Allow-Origin: http://localhost:5173');
+        header('Access-Control-Allow-Origin: ' . (in_array($_SERVER['HTTP_ORIGIN'] ?? '', ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://product-frontend-xwhk.onrender.com'], true) ? $_SERVER['HTTP_ORIGIN'] : ''));
         header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With, X-RateLimit-*');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -107,7 +107,7 @@ $router->options(
     'api/auth/refresh',
     function () {
 
-        header('Access-Control-Allow-Origin: http://localhost:5173');
+        header('Access-Control-Allow-Origin: ' . (in_array($_SERVER['HTTP_ORIGIN'] ?? '', ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://product-frontend-xwhk.onrender.com'], true) ? $_SERVER['HTTP_ORIGIN'] : ''));
         header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With, X-RateLimit-*');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -123,7 +123,7 @@ $router->options(
     'api/auth/logout',
     function () {
 
-        header('Access-Control-Allow-Origin: http://localhost:5173');
+        header('Access-Control-Allow-Origin: ' . (in_array($_SERVER['HTTP_ORIGIN'] ?? '', ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://product-frontend-xwhk.onrender.com'], true) ? $_SERVER['HTTP_ORIGIN'] : ''));
         header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With, X-RateLimit-*');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -171,7 +171,7 @@ $router->options(
     'api/products',
     function () {
 
-        header('Access-Control-Allow-Origin: http://localhost:5173');
+        header('Access-Control-Allow-Origin: ' . (in_array($_SERVER['HTTP_ORIGIN'] ?? '', ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://product-frontend-xwhk.onrender.com'], true) ? $_SERVER['HTTP_ORIGIN'] : ''));
         header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With, X-RateLimit-*');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -187,7 +187,7 @@ $router->options(
     'api/products/{id}',
     function () {
 
-        header('Access-Control-Allow-Origin: http://localhost:5173');
+        header('Access-Control-Allow-Origin: ' . (in_array($_SERVER['HTTP_ORIGIN'] ?? '', ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://product-frontend-xwhk.onrender.com'], true) ? $_SERVER['HTTP_ORIGIN'] : ''));
         header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Allow-Headers: Authorization, Content-Type, X-Requested-With, X-RateLimit-*');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
