@@ -19,7 +19,8 @@ $config['refresh_token_key'] = '0bNvxjPFJ6dhi1Ttf7AStp95zUcd1iy94mjblklwfPs';
 
 $config['allow_origin'] = [
     'http://localhost:5173',
-    'http://127.0.0.1:5173'
+    'http://127.0.0.1:5173',
+    'https://product-frontend-xwhk.onrender.com'
 ];
 
 $config['refresh_token_table'] = 'refresh_tokens';
